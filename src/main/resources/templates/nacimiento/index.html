@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+
+        <title>Sistema de Control de ASP | Centros</title>
+
+        <!--/*/ <th:block th:insert="fragments/headerinc :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <div class="container">
+            <!--/*/ <th:block th:insert="fragments/header :: header"></th:block> /*/-->
+            <div th:if="${not #lists.isEmpty(page)}">
+                <h2>Solicitudes de Nacimiento</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th>No.</th>
+                        <th><a class="sorted" sd:pagination-sort="nombresApellidos">Nombres y Apellidos</a></th>
+                        <th><a class="sorted" sd:pagination-sort="surtirEfecto">Surtir Efecto</a></th>
+                        <th><a class="sorted" sd:pagination-sort="fechaNacimiento">Fecha Nacimiento</a></th>
+                        <th><a class="sorted" sd:pagination-sort="folioCi">Folio CI</a></th>
+                        <th><a class="sorted" sd:pagination-sort="tomoCi">Tomo CI</a></th>
+                        <th>Estado</th>
+                        <th>Cambiar Estado</th>
+                        <th>Ver</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                    <tr th:each="nacimiento,iterationStatus : ${page}">
+                        <td th:text="${iterationStatus.count}"></td>
+                        <td th:text="${nacimiento.nombresApellidos}"></td>
+                        <td th:text="${nacimiento.surtirEfecto} == 'E' ? 'Exterior' : (${nacimiento.surtirEfecto} == 'N' ? 'Nacional' : 'No Definido')"></td>
+                        <td th:text="${#dates.format(nacimiento.fechaNacimiento, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${nacimiento.folioCi}"></td>
+                        <td th:text="${nacimiento.tomoCi}"></td>
+                        <td><span th:text="${nacimiento.estado}" class="label label-table" th:classappend="(${nacimiento.estado}=='Enviada' ? 'label-danger' : (${nacimiento.estado}!='Listo para Recoger' ? 'label-warning' : 'label-primary'))"></span></td>
+                        <td><a th:href="${ '/nacimiento/' + nacimiento.id}" style="text-decoration: #000; color: #006666">Cambiar</a></td>
+                        <td><a th:href="${ '/nacimiento/' + nacimiento.id}" style="text-decoration: #000; color: #006666">Ver</a></td>
+                        <td><a th:href="${'/nacimiento/edit/'+ nacimiento.id}" style="text-decoration: #000; color: #006666">Editar</a></td>                        
+                        <td><form th:action="@{|/nacimiento/delete/${nacimiento.id}|}" method="post" th:object="${nacimiento}">                                
+                                <button type="submit" value="Submit" style="text-decoration: #000; color: #006666">Eliminar</button>
+                            </form></td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="pagination">
+                        <div sd:pagination-summary="">info</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <nav class="pull-right">
+                        <ul class="pagination" sd:pagination="full">
+                            <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <!--/*/ <th:block th:insert="fragments/footer :: footer"></th:block> /*/-->
+
+
+        </div>
+
+    </body>
+</html>

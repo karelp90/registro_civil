@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+
+        <title>Sistema de Control de ASP | Centros</title>
+
+        <!--/*/ <th:block th:insert="fragments/headerinc :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <div class="container">
+            <!--/*/ <th:block th:insert="fragments/header :: header"></th:block> /*/-->
+            <div th:if="${not #lists.isEmpty(page)}">
+                <h2>Estados de Solicitud</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th>No.</th>
+                        <th><a class="sorted" sd:pagination-sort="descr">Descripción</a></th>
+                        <th><a class="sorted" sd:pagination-sort="orden">Orden</a></th>
+                        <th>View</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tr th:each="estado,iterationStatus : ${page}">
+                        <td th:text="${iterationStatus.count}"></td>
+                        <td th:text="${estado.descr}"></td>
+                        <td th:text="${estado.orden}"></td>
+                        <td><a th:href="${ '/estado_solicitud/' + estado.id}" class="btn btn-success btn-xs">View</a></td>
+                        <td><a th:href="${'/estado_solicitud/edit/'+ estado.id}" class="btn btn-warning btn-xs">Edit</a></td>
+                        <td><a rel="nofollow" th:href="${'/estado_solicitud/delete/' + estado.id}" data-method="post" class="btn btn-danger btn-xs">Delete</a></td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="pagination">
+                        <div sd:pagination-summary="">info</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <nav class="pull-right">
+                        <ul class="pagination" sd:pagination="full">
+                            <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!--/*/ <th:block th:insert="fragments/footer :: footer"></th:block> /*/-->
+        </div>
+
+    </body>
+</html>

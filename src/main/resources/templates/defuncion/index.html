@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+
+        <title>Sistema de Control de ASP | Centros</title>
+
+        <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <div class="container">
+            <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->            
+            <div th:if="${not #lists.isEmpty(page)}">
+                <h2>Solicitudes de Defunciones</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th>No.</th>
+                        <th><a class="sorted" sd:pagination-sort="nombresApellidos">Nombres y Apellidos</a></th>
+                        <th><a class="sorted" sd:pagination-sort="surtirEfecto">Surtir Efecto</a></th>
+                        <th><a class="sorted" sd:pagination-sort="fechaFallecimiento">Fecha Fallecimiento</a></th>
+                        <th><a class="sorted" sd:pagination-sort="folioCi">Folio CI</a></th>
+                        <th><a class="sorted" sd:pagination-sort="tomoCi">Tomo CI</a></th>
+                        <th>View</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tr th:each="defuncion,iterationStatus : ${page}">
+                        <td th:text="${iterationStatus.count}"></td>
+                        <td th:text="${defuncion.nombresApellidos}"></td>
+                        <td th:text="${defuncion.surtirEfecto} == 'E' ? 'Exterior' : (${defuncion.surtirEfecto} == 'N' ? 'Nacional' : 'No Definido')"></td>
+                        <td th:text="${#dates.format(defuncion.fechaFallecimiento, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${defuncion.folioDefuncion}"></td>
+                        <td th:text="${defuncion.tomoDefuncion}"></td>
+                        <td><a th:href="${ '/defuncion/' + defuncion.id}" class="btn btn-success btn-xs">View</a></td>
+                        <td><a th:href="${'/defuncion/edit/'+ defuncion.id}" class="btn btn-warning btn-xs">Edit</a></td>
+                        <td><a th:href="${'/defuncion/delete/' + defuncion.id}" class="btn btn-danger btn-xs">Delete</a></td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="pagination">
+                        <div sd:pagination-summary="">info</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <nav class="pull-right">
+                        <ul class="pagination" sd:pagination="full">
+                            <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            
+            <!--/*/ <th:block th:insert="fragments/footer :: footer"></th:block> /*/-->
+
+        </div>        
+        
+
+    </body>
+</html>

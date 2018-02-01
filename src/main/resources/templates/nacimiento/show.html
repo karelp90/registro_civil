@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+
+        <title>Sistema de Control de ASP | Detalles de Centro</title>
+
+        <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+        <script>
+            $(document).ready(function ($) {
+                $("#edit-form").submit(function (event) {
+                    event.preventDefault();
+                    postEdit();
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+
+            <div class="row panel panel-success">
+                <div class="panel-heading lead">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8"><i class="fa fa-birthday-cake"></i> Detalles de Solicitud de Nacimiento</div>
+                        <div class="col-lg-4 col-md-4 text-right">
+                            <div class="btn-group text-center">
+                                <a href="student-view.php?sid=1&amp;id=68" class="btn btn-success btn-sm btn-default"><i class="fa fa-eye fa-1x"></i></a>
+                                <a href="student-modify.php?sid=1&amp;id=68" class="btn btn-success btn-sm btn-default"><i class="fa fa-pencil fa-1x"></i></a>
+                                <a href="student-print.php?sid=1&amp;id=68" class="btn btn-success btn-sm btn-default"><i class="fa fa-print fa-1x"></i></a>
+                                <a href="student-delete.php?sid=1&amp;id=68" class="btn btn-success btn-sm btn-default"><i class="fa fa-trash-o fa-1x"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3">
+                                    <center>
+                                        <span class="text-center">
+
+                                            <!--<img src="https://lh5.googleusercontent.com/proxy/EkYugv9KzLUfAIpv-P4g6b0_mKxhcsfTvNmVueDn6XDHQp_SA0_hG2YFVAwB0Lbj_S-LrT-OtYsvxXMCrkZZMCmBfwelTQaAZW6GZwMQ8bRLwEvZonc0k0NxUpkhLBDuApx25K735rZfyHCIqA1RVpSdU84HF7U-j3xAwt3XLevAJtr5pwaVnRUC=w120-h120" class="img-responsive img-thumbnail">-->
+
+
+
+                                            <ul class="list-inline">
+                                                <li class="m-t-15">
+                                                    <h4 class="text-muted">Ticket</h4>
+                                                    <h3 th:text="${nacimiento.cod}"></h3>
+                                                </li>
+                                            </ul>
+                                            <ul class="list-inline">
+                                                <li class="m-t-15">
+                                                    <h4 class="text-muted">Estado</h4>
+                                                    <h3><span th:text="${estadoActual.idEstado.descr}" class="label label-table" th:classappend="(${estadoActual.idEstado.orden}=='inicio' ? 'label-danger' : (${estadoActual.idEstado.orden}!='fin' ? 'label-warning' : 'label-primary'))"></span></h3>
+                                                    <div class="card-footer">
+                                                        <hr>
+                                                        <div class="stats">
+                                                            <i class="fa fa-clock-o" th:text="' &Uacute;ltima Act: ' + ${#dates.format(estadoActual.fechaEstado, 'dd/MM/yyyy, HH:mm:ss')}"></i>
+                                                        </div>
+                                                    </div>  
+                                                </li>
+                                            </ul>
+
+
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="PhotoOption" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h4 class="modal-title text-success" id="myModalLabel"><i class="fa fa-exchange"></i> <span class="text-center">Cambiar Estado</span></h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div>
+                                                                <form class="form-horizontal" th:object="${estadoInicial}" th:action="@{/historial_estados}" method="post">
+                                                                    <input type="hidden" th:field="*{id}"/>
+                                                                    <input type="hidden" th:field="*{idSolicitud}"/>
+                                                                    <div class="form-group">
+                                                                        <label class="col-sm-2 control-label">Estado:</label>
+                                                                        <div class="col-sm-10">
+                                                                            <select class="form-control" th:field="*{idEstado}">
+                                                                                <!--th:field="*{estados}"-->                                                                            
+                                                                                <option th:each="estado : ${estados}"
+                                                                                        th:value="${estado.id}" th:text="${estado.descr}">
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="col-sm-2 control-label">Historial de Estados:</label>
+                                                                        <div class="col-sm-10">
+                                                                            <select class="form-control">
+                                                                                <!--th:field="*{estados}"-->                                                                            
+                                                                                <option th:each="estado : ${historialEstados}"
+                                                                                        th:value="${estado.id}" th:text="${estado.idEstado.descr}">
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="col-sm-2 control-label">Observ.</label>
+                                                                        <div class="col-sm-10">
+                                                                            <textarea class="form-control" placeholder="" rows="2" th:field="*{observ}"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+
+                                                                        <div class="col-md-6"></div>
+                                                                        <div class="col-md-1"></div>
+                                                                        <div class="col-md-1"></div>
+                                                                        <div class="col-md-1"></div>                                                                            
+                                                                        <div class="col-md-1"></div>
+                                                                        <div class="col-md-1"><button type="submit" class="btn btn-success">Guardar</button></div>
+                                                                        <div class="col-md-1"></div>
+
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <!--                                                        <div class="modal-footer">
+                                                                                                                    <a href="upload/upload-view.php?id=68" class="btn btn-success"><i class="fa fa-photo"></i> Aceptar</a>
+                                                                                                                    <a href="upload/upload-view.php?id=68&amp;name=Viddhyut Mall&amp;src=view" class="btn btn-danger"><i class="fa fa-trash"></i> Cancelar</a>
+                                                                                                                </div>-->
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->                    
+                                        </span></center>
+
+                                    <div class="table-responsive panel pad-20">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center">                                                                    
+                                                        <a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#PhotoOption"><i class="fa fa-exchange"></i> Cambiar Estado</a>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#Summery" class="text-success"><i class="fa fa-indent"></i> Resumen</a></li>
+                                        <li><a data-toggle="tab" href="#Contact" class="text-success"><i class="fa fa-bookmark-o"></i> Historial</a></li>
+                                        <li><a data-toggle="tab" href="#Address" class="text-success"><i class="fa fa-home"></i> Address</a></li>
+                                        <li><a data-toggle="tab" href="#General" class="text-success"><i class="fa fa-info"></i> General Info</a></li>	
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div id="Summery" class="tab-pane fade in active">
+
+                                            <div class="table-responsive panel">
+                                                <table class="table">
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-user"></i> Nombres y Apellidos</td>
+                                                            <td th:text="${nacimiento.nombresApellidos}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-plane"></i> Surtir Efecto</td>
+                                                            <td th:text="${nacimiento.surtirEfecto} == 'E' ? 'Exterior' : (${nacimiento.surtirEfecto} == 'N' ? 'Nacional' : 'No Definido')"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-book"></i> Cantidad de Certificaciones</td>
+                                                            <td th:text="${nacimiento.cantCertif}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-calendar"></i> Fecha de Solicitud</td>
+                                                            <td th:text="${#strings.capitalizeWords(#dates.format(nacimiento.fechaSolicitud, 'dd MMMM yyyy, HH:mm:ss a'))}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="glyphicon glyphicon-phone"></i> Teléfono Móvil</td>
+                                                            <td th:text="${#strings.defaultString(nacimiento.movil,'No especificado')}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-envelope-o"></i> Email</td>
+                                                            <td th:text="${#strings.defaultString(nacimiento.email,'No especificado')}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-calendar"></i> Fecha de Nacimiento</td>
+                                                            <td th:text="${#strings.capitalizeWords(#dates.format(nacimiento.fechaNacimiento, 'dd MMMM, yyyy'))}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-id-card-o"></i> Folio CI</td>
+                                                            <td th:text="${nacimiento.folioCi}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-id-card-o"></i> Tomo CI</td>
+                                                            <td th:text="${nacimiento.tomoCi}"></td>
+                                                        </tr>
+                                                        <tr class="text-bold">
+                                                            <td class="text-success"><i class="fa fa-id-card-o"></i> Inscrito en</td>
+                                                            <td th:text="${nacimiento.idOficRegCivilInscrito.descr}"></td>
+                                                        </tr>
+                                                        <tr class="text-bold">
+                                                            <td class="text-success"><i class="fa fa-id-card-o"></i> A Recoger en</td>
+                                                            <td th:text="'Reg. Civil ' + ${nacimiento.idOficRegCivilARecoger.descr} + ', Municipio: ' + ${nacimiento.idOficRegCivilARecoger.idMunicipio.descr}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-info"></i> Otros Datos</td>
+                                                            <td>
+                                                                <address th:text="${nacimiento.otrosDatos}">
+
+                                                                </address>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div id="Address" class="tab-pane fade">
+                                            <div class="table-responsive panel">
+                                                <table class="table">
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-home"></i> Address</td>
+                                                            <td>
+                                                                <address>
+                                                                    <strong>
+                                                                        C-***, Amahiya </strong><br>
+                                                                    Kharobar, ****** <br>
+                                                                    Gorakhpur, Utter Pradesh, India<br>
+                                                                </address>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div id="Contact" class="tab-pane fade">
+
+                                            <div class="modal fade" id="umodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                                    aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title text-success" id="myModalLabel"><i class="fa fa-pencil"></i> <span class="text-center">Editar</span></h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div>
+                                                                <form id="edit-form" class="form-horizontal" th:object="${estado_h}" th:action="@{/historial_estado/update}" method="post">
+                                                                    <!--                                                                    <input id="update-id"  th:field="*{id}" th:value="${estado.id}"/>
+                                                                                                                                        <input id="update-idSolicitud" type="hidden" th:field="*{idSolicitud}"/>-->
+
+                                                                    <div class="form-group">
+                                                                        <label class="col-sm-2 control-label">Id</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input id="update-id" type="text" required="true" class="form-control" th:field="*{id}"/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="col-sm-2 control-label">Estado</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input id="update-estado" type="text" required="true" class="form-control" th:field="*{idEstado}"/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="col-sm-2 control-label">Fecha</label>
+                                                                        <div class="col-sm-10">
+                                                                            <input id="update-fechaEstado" type="text" required="true" class="form-control" th:field="*{fechaEstado}"/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="col-sm-2 control-label">Observ.</label>
+                                                                        <div class="col-sm-10">
+                                                                            <textarea id="update-observ" class="form-control" placeholder="" rows="2" th:field="*{observ}"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- <div class="form-group">
+                                                                         <label class="col-sm-2 control-label">Estado:</label>
+                                                                         <div class="col-sm-10">
+                                                                             <select class="form-control" th:field="*{idEstado}">
+                                                                                 th:field="*{estados}"                                                                            
+                                                                                 <option th:each="estado : ${estados}"
+                                                                                         th:value="${estado.id}" th:text="${estado.descr}">
+                                                                                 </option>
+                                                                             </select>
+                                                                         </div>
+                                                                     </div>
+                                                                     <div class="form-group">
+                                                                         <label class="col-sm-2 control-label">Historial de Estados:</label>
+                                                                         <div class="col-sm-10">
+                                                                             <select class="form-control">
+                                                                                 th:field="*{estados}"                                                                            
+                                                                                 <option th:each="estado : ${historialEstados}"
+                                                                                         th:value="${estado.id}" th:text="${estado.idEstado.descr}">
+                                                                                 </option>
+                                                                             </select>
+                                                                         </div>
+                                                                     </div>
+                                                                     <div class="form-group">
+                                                                         <label class="col-sm-2 control-label">Observ.</label>
+                                                                         <div class="col-sm-10">
+                                                                             <textarea id="update-observ" class="form-control" placeholder="" rows="2" th:field="*{estadoMas.observ}"></textarea>
+                                                                         </div>
+                                                                     </div>-->
+                                                                    <div class="row">
+
+                                                                        <div class="col-md-6"></div>
+                                                                        <div class="col-md-1"></div>
+                                                                        <div class="col-md-1"></div>
+                                                                        <div class="col-md-1"></div>                                                                            
+                                                                        <div class="col-md-1"></div>
+                                                                        <div class="col-md-1"><button type="submit" class="btn btn-success">Guardar</button></div>
+                                                                        <div class="col-md-1"></div>
+
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <!--                                                        <div class="modal-footer">
+                                                                                                                    <a href="upload/upload-view.php?id=68" class="btn btn-success"><i class="fa fa-photo"></i> Aceptar</a>
+                                                                                                                    <a href="upload/upload-view.php?id=68&amp;name=Viddhyut Mall&amp;src=view" class="btn btn-danger"><i class="fa fa-trash"></i> Cancelar</a>
+                                                                                                                </div>-->
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->   
+
+                                            <div class="table-responsive panel">
+
+                                                <div th:if="${not #lists.isEmpty(historialEstados)}">
+                                                    <h2>Historial</h2>
+                                                    <table class="table table-striped">
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>Estado</th>
+                                                            <th>Fecha</th>
+                                                            <th>Observ</th>
+                                                            <th>Inscrito en RC</th>
+                                                            <th>A Recoger en RC</th>
+                                                            <th>Editar</th>
+                                                            <th>Eliminar</th>
+                                                        </tr>
+                                                        <tr th:each="h,iterationStatus : ${historialEstados}">
+                                                            <td th:text="${iterationStatus.count}"></td>
+                                                            <td style="text-align: left" th:text="${h.idEstado.descr}"></td>
+                                                            <td style="text-align: left" th:text="${#strings.capitalizeWords(#dates.format(h.fechaEstado, 'MMMM dd, yyyy h:mm a'))}"></td>                       
+                                                            <td style="text-align: left" th:text="${h.observ}"></td>
+                                                            <td style="text-align: left" th:text="${h.idSolicitud.idOficRegCivilInscrito.descr}"></td>
+                                                            <td style="text-align: left" th:text="${h.idSolicitud.idOficRegCivilARecoger.descr}"></td>
+                                                            <td><a data-toggle="modal" data-target="#umodal" th:onclick="'showEditModal(' + ${h.id} + ')'"><i class="fa fa-pencil fa-1x"></i></a></td>
+                                                            <td><a data-toggle='modal' data-target='#dmodal' th:onclick="'showDeleteModal(' + ${h.id} + ')'"><i class="fa fa-trash-o fa-1x"></i></a></td>
+
+
+                                                        </tr>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="General" class="tab-pane fade">
+                                            <div class="table-responsive panel">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-university"></i> Last School</td>
+                                                            <td>Pawan Mall's School</td>
+                                                        </tr>                                        
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-calendar"></i> Date of Admission</td>
+                                                            <td>March 4, 2009</td>
+                                                        </tr>                                        
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-home"></i> Birth Place</td>
+                                                            <td>Delhi</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-calendar"></i> Academic Year</td>
+                                                            <td>2015-2016</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-medkit"></i> Medical Condition</td>
+                                                            <td>Normal</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="fa fa-thumbs-up"></i> Active/Inactive</td>
+                                                            <td>Student is Active</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-success"><i class="glyphicon glyphicon-time"></i> Last Editing</td>
+                                                            <td>2015-08-20 09:41:56</td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.table-responsive -->
+
+                </div>
+            </div>
+
+
+
+
+
+
+            <!--            <h2>Centro Details</h2>
+                        <div>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Name:</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static" th:text="${nacimiento.nombresApellidos}">nombresApellidos</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Jefe de Brigada:</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static" th:text="${#dates.format(nacimiento.fechaNacimiento, 'dd  MMMM yyyy')}">fechaNacimiento</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>-->
+
+            <!--/*/ <th:block th:insert="fragments/footer :: footer"></th:block> /*/-->
+
+        </div>
+
+    </body>
+</html>

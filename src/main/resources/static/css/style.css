@@ -1,0 +1,76 @@
+body { padding-top: 70px; }
+
+nav.navbar ul.navbar-nav a { color: #9d9d9d; border-style: solid; border-width: 0 0 2px 0; border-color: #222222; }
+nav.navbar ul.navbar-nav a:hover,
+nav.navbar ul.navbar-nav a:visited,
+nav.navbar ul.navbar-nav a:focus,
+nav.navbar ul.navbar-nav a:active { background: #080808; }
+nav.navbar ul.navbar-nav a:hover { border-color: #EE1C25; }
+
+nav.navbar ul.navbar-nav .activo { background: #080808; color: white;border-color: #EE1C25;}
+
+/*CSS to have sort icons in the table headers. Data pagination made easy with thymeleaf and spring data*/ 
+.sorted-desc::after, .sorted-asc::after {
+    float: right;
+}
+
+.sorted-desc::after{
+    content:"\25BC";
+}
+
+.sorted-asc::after{
+    content: "\25B2";
+}
+/*end*/
+
+.text-muted {
+    color: #98a6ad;
+}
+
+.m-b-0 {
+    margin-bottom: 0 !important;
+}
+
+li.m-t-15 h3{
+    margin-top: 0px;
+}
+li.m-t-15 h4{
+    margin-bottom: 2px;
+}
+
+.pad-20{
+    padding-top: 50px;
+}
+tr.text-bold{
+    font-weight:bold;
+}
+.card-footer {
+    margin-top: 0;
+}
+.card-footer .stats {
+    margin-top: 0;
+    color: #a49e93;
+    font-weight: 300;
+    padding-top: 0px;
+}
+
+/*CSS para modificar la posicion del Modal de Boostrap para que salga en el medio'*/
+.modal {
+    text-align: center;
+    padding: 0!important;
+}
+
+.modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+/*FIN CSS para modificar la posicion del Modal de Boostrap para que salga en el medio'*/

@@ -1,0 +1,22 @@
+<div th:fragment="header">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" th:href="@{/}">
+                    <i class="fa fa-address-card fa-lg"></i> Registro Civil
+                </a>
+                <ul class="nav navbar-nav">
+                    <li><a href="#" th:href="@{/solicitudes}" th:classappend="${modelo=='solicitud' ? 'activo' : ''}">Solicitudes</a></li>
+                    <li><a href="#" th:href="@{/nacimientos}" th:classappend="${modelo=='nacimiento' ? 'activo' : ''}">Nacimiento</a></li>
+                    <li><a href="#" th:href="@{/defunciones}" th:classappend="${modelo=='defuncion' ? 'activo' : ''}">Defunci&oacute;n</a></li>
+                    <li><a href="#" th:href="@{/matrimonios}" th:classappend="${modelo=='matrimonio' ? 'activo' : ''}">Matrimonio</a></li>
+                    <li><a href="#" th:href="@{/nacimiento/new}" th:classappend="${modelo=='newNacimiento' ? 'activo' : ''}">New Nacimiento</a></li>
+                    <!--<li><a href="#" th:href="@{/defuncion/new}" th:classappend="${modelo=='newDefuncion' ? 'activo' : ''}">New Defunci&oacute;n</a></li>-->
+                    <li><a href="#" th:href="@{/estados_solicitud}" th:classappend="${modelo=='estados' ? 'activo' : ''}">Estado Solicitud</a></li>
+                    <li><a href="#" th:href="@{/rastreador_solicitudes}" th:classappend="${modelo=='estados' ? 'activo' : ''}">Rastrear</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</div>

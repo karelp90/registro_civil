@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <!--/*  Multiple fragments may be defined in one file */-->
+        <div th:fragment="footer" th:align="center">
+            &copy; <span th:text="${#dates.year({#dates.createNow()})}"></span>
+            <span>Direcci&oacute;n Provincial de Justicia - Granma</span>
+        </div>
+        <div th:fragment="footer-admin" th:align="center">
+            &copy; <span>2017</span>
+            <span>My Awesome App </span><span></span>
+        </div>
+    </body>
+</html>
+

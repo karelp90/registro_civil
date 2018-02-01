@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+
+        <title>Sistema de Control de ASP | Centros</title>
+
+        <!--/*/ <th:block th:insert="fragments/headerinc :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <div class="container">
+            <!--/*/ <th:block th:insert="fragments/header :: header"></th:block> /*/-->
+
+
+            <div class="jumbotron text-center">
+                <h2>Rastreador de Estado de Solicitud</h2>
+                <div class="sample-tracking">Try this: <a href="/track/fedex/12345EXAMPLE67890">Tracking Example</a></div>
+                <div class="row">
+                    <div class="col-sm-6 col-sm-push-3">
+                        <form id="frmTrackSearch" th:action="@{/rastrear_solicitud}" method="post">
+                            <div class="form-group">
+                                <div class="input-group input-group-lg">
+                                    <input type="text" class="form-control" name="cod" placeholder="Entre el número de Ticket..." th:value="${cod}" >
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" type="submit">Buscar</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="sample-tracking" style="margin-top: 5px;"><a href="https://commercial.packagemapping.com">Add this tracking widget to your site</a></div>
+                
+                <div th:if="${not #lists.isEmpty(historial)}">
+                <h2>Historial</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th>No.</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Observ</th>
+                        <th>Inscrito en RC</th>
+                        <th>A Recoger en RC</th>
+                    </tr>
+                    <tr th:each="h,iterationStatus : ${historial}">
+                        <td th:text="${iterationStatus.count}"></td>
+                        <td style="text-align: left" th:text="${h.idEstado.descr}"></td>
+                        <td style="text-align: left" th:text="${#strings.capitalizeWords(#dates.format(h.fechaEstado, 'MMMM dd, yyyy HH:mm a'))}"></td>                       
+                        <td style="text-align: left" th:text="${h.observ}"></td>
+                        <td style="text-align: left" th:text="${h.idSolicitud.idOficRegCivilInscrito.descr}"></td>
+                        <td style="text-align: left" th:text="${h.idSolicitud.idOficRegCivilARecoger.descr}"></td>
+                    </tr>
+                </table>
+
+            </div>
+                
+            </div>
+
+            <!--/*/ <th:block th:insert="fragments/footer :: footer"></th:block> /*/-->
+
+
+        </div>
+
+    </body>
+</html>

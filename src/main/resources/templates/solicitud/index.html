@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+
+        <title>Sistema de Control de ASP | Centros</title>
+
+        <!--/*/ <th:block th:insert="fragments/headerinc :: head"></th:block> /*/-->
+    </head>
+    <body>
+        <div class="container">
+            <!--/*/ <th:block th:insert="fragments/header :: header"></th:block> /*/-->
+            <div th:if="${not #lists.isEmpty(page)}">
+                <h2>Solicitudes</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th>No.</th>
+                        <th><a class="sorted" sd:pagination-sort="nombresApellidos">Nombres y Apellidos</a></th>
+                        <th><a class="sorted" sd:pagination-sort="tipo">Tipo</a></th>
+                        <th><a class="sorted" sd:pagination-sort="cod">Cod</a></th>
+                        <th><a class="sorted" sd:pagination-sort="surtirEfecto">Surtir Efecto</a></th>
+                        <th><a class="sorted" sd:pagination-sort="cantCertif">Cant</a></th>
+                        <th><a class="sorted" sd:pagination-sort="fechaSolicitud">Fecha</a></th>
+                        <th><a class="sorted" sd:pagination-sort="fechaSolicitud">Hora</a></th>
+                        <th><a class="sorted" sd:pagination-sort="estado">Estado</a></th>
+                        <th><a class="sorted" sd:pagination-sort="url">Url</a></th>
+                        <th>Estado</th>
+                        <th>View</th>
+                        <th >Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tr th:each="solicitud,iterationStatus : ${page}">
+                        <td th:text="${iterationStatus.count}"></td>
+                        <td th:text="${solicitud.nombresApellidos}"></td>
+                        <td th:text="${solicitud.tipo}"></td>
+                        <td th:text="${solicitud.cod}"></td>
+                        <td th:text="${solicitud.surtirEfecto} == 'E' ? 'Exterior' : (${solicitud.surtirEfecto} == 'N' ? 'Nacional' : 'No Definido')"></td>
+                        <td th:text="${solicitud.cantCertif}"></td>
+                        <td th:text="${#dates.format(solicitud.fechaSolicitud, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${#dates.format(solicitud.fechaSolicitud, 'HH:mm:ss')}"></td>
+                        <td><span th:text="${solicitud.estado}" class="label label-table" th:classappend="(${solicitud.estado}=='Enviada' ? 'label-danger' : (${solicitud.estado}!='Listo para Recoger' ? 'label-warning' : 'label-primary'))"></span></td>
+                        <td th:text="${solicitud.url}"></td>
+                        <td><a th:href="${ '/'+#strings.toLowerCase(solicitud.tipo)+'/' + solicitud.id}" style="text-decoration: #000; color: #006666">View</a></td>
+                        <td><a th:href="${ '/'+#strings.toLowerCase(solicitud.tipo)+'/' + solicitud.id}" style="text-decoration: #000; color: #006666">View</a></td>
+                        <td><a th:href="${ '/'+#strings.toLowerCase(solicitud.tipo)+'/edit/' + solicitud.id}" style="text-decoration: #000; color: #006666">Edit</a></td>                                                
+                        <td><form th:action="${'/' + #strings.toLowerCase(solicitud.tipo) + '/delete/' + solicitud.id}" method="post" th:object="${solicitud}">
+                                <button type="submit" value="Submit" style="text-decoration: #000; color: #006666">Delete</button>
+                            </form></td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="pagination">
+                        <div sd:pagination-summary="">info</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <nav class="pull-right">
+                        <ul class="pagination" sd:pagination="full">
+                            <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <!--/*/ <th:block th:insert="fragments/footer :: footer"></th:block> /*/-->
+
+        </div>
+
+    </body>
+</html>
